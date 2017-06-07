@@ -34,11 +34,18 @@ endmodule
 module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 	always @(*)
 	begin
-	//Finish: (following is just a stub)
-
-	
-
-	assign out = Rm;
+		//Data processing imm shift
+		if()
+		//Data processing register shift
+		else if()
+		//Data processing imm
+		else if()
+		//Load/store imm
+		else if()
+		//Load/store register
+		else if()
+		//nothing
+		else assign out = Rm;
 	end
 endmodule
 
