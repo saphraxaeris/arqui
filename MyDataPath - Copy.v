@@ -35,6 +35,9 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 	always @(*)
 	begin
 	//Finish: (following is just a stub)
+
+	
+
 	assign out = Rm;
 	end
 endmodule
