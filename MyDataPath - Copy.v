@@ -82,7 +82,7 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 						assign out = Rm >> instruction[11:7];
 					end
 					2'b10: begin //ASR
-						assign out = Rm >>> instruction[11:7];
+						assign out = $signed(Rm) >>> instruction[11:7];
 					end
 					2'b11: begin //ROR
 						tempReg = Rm;
@@ -96,15 +96,7 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 				endcase
 			end
 			3'b010: begin //Load/store imm
-				//CHECK IF CORRECT- EXCEL SHEET SAYS OFFSET12
-				tempReg = instruction[11:0];
-				for(i=0;i<12;i=i+1)
-					begin
-						lsb = tempReg[0];
-						tempReg = tempReg>>1;
-						tempReg[31]=lsb;
-					end
-				assign out = tempReg;
+				assign out = instruction[11:0];
 			end
 			3'b011: begin //Load/store register
 				tempReg = instruction[7:0];
@@ -117,8 +109,7 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 				assign out = tempReg;
 			end
 			3'b101: begin //Branch and branch/link
-				tempReg = instruction[23:0]* 4'd4;
-				assign out = tempReg;
+				assign out = { {8{instruction[23]}}, instruction[23:0]*4 };;
 			end
 			default: assign out = Rm;
 		endcase
