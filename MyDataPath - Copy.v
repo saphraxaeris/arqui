@@ -32,20 +32,95 @@ module MAR(output reg [7:0] out, input [31:0] in, input LE, CLR, CLK); //Add LE,
 endmodule
 
 module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
+	reg lsb; //keeps least significant bit
+	reg [31:0] tempReg;
 	always @(*)
 	begin
-		//Data processing imm shift
-		if()
-		//Data processing register shift
-		else if()
-		//Data processing imm
-		else if()
-		//Load/store imm
-		else if()
-		//Load/store register
-		else if()
-		//nothing
-		else assign out = Rm;
+		case(instruction[27:25])
+			3'b000: begin
+				if(instruction[4] == 1'b0) //Data processing imm shift
+					begin
+						tempReg = instruction[7:0];
+						for(i=0;i<(instruction[11:8])*2;i=i+1)
+							begin
+								lsb = tempReg[0];
+								tempReg = tempReg>>1;
+								tempReg[31]=lsb;
+							end
+						assign out = tempReg;
+					end
+				else //Data processing register shift
+					begin
+						case(instruction[6:5])
+							2'b00: begin //LSL
+								assign out = Rm;
+							end
+							2'b01: begin //LSR
+								assign out = 0;
+							end
+							2'b10: begin //ASR
+								if (Rm[31] == 0) begin
+									assign out = 0;
+								end
+								else begin
+									assign out = 32'hFFFFFFFF;
+								end
+							end
+							2'b11: begin //ROR
+								assign out = Rm >>> 1;
+							end
+						endcase
+					end
+			end
+			3'b001: begin //Data processing imm
+				case(instruction[6:5])
+					2'b00: begin //LSL
+						assign out = Rm << instruction[11:7];
+					end
+					2'b01: begin //LSR
+						assign out = Rm >> instruction[11:7];
+					end
+					2'b10: begin //ASR
+						assign out = Rm >>> instruction[11:7];
+					end
+					2'b11: begin //ROR
+						tempReg = Rm;
+						for(i=0; i<instruction[11:7]; i=i+1) begin
+							lsb = tempReg[0];
+							tempReg = tempReg >> 1;
+							tempReg[31] = lsb;
+						end
+						assign out = tempReg;
+					end
+				endcase
+			end
+			3'b010: begin //Load/store imm
+				//CHECK IF CORRECT- EXCEL SHEET SAYS OFFSET12
+				tempReg = instruction[11:0];
+				for(i=0;i<12;i=i+1)
+					begin
+						lsb = tempReg[0];
+						tempReg = tempReg>>1;
+						tempReg[31]=lsb;
+					end
+				assign out = tempReg;
+			end
+			3'b011: begin //Load/store register
+				tempReg = instruction[7:0];
+				for(i=0;i<(instruction[11:8])*2;i=i+1)
+					begin
+						lsb = tempReg[0];
+						tempReg = tempReg>>1;
+						tempReg[31]=lsb;
+					end
+				assign out = tempReg;
+			end
+			3'b101: begin //Branch and branch/link
+				tempReg = instruction[23:0]* 4'd4;
+				assign out = tempReg;
+			end
+			default: assign out = Rm;
+		endcase
 	end
 endmodule
 
