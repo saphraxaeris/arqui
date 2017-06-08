@@ -34,6 +34,7 @@ endmodule
 module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 	reg lsb; //keeps least significant bit
 	reg [31:0] tempReg;
+	integer i;
 	always @(*)
 	begin
 		case(instruction[27:25])
