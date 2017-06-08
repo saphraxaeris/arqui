@@ -35,6 +35,8 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 	reg lsb; //keeps least significant bit
 	reg [31:0] tempReg;
 	integer i;
+	reg [23:0] mult;
+	reg [7:0] concat;
 	always @(*)
 	begin
 		case(instruction[27:25])
@@ -109,7 +111,9 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 				assign out = tempReg;
 			end
 			3'b101: begin //Branch and branch/link
-				assign out = { {8{instruction[23]}}, instruction[23:0]*4 };;
+				mult = instruction[23:0]*4;
+				concat = {8{instruction[23]}};
+				assign out = { concat, mult };
 			end
 			default: assign out = Rm;
 		endcase
