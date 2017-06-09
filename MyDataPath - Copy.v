@@ -52,7 +52,7 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 							end
 						assign out = tempReg;
 					end
-				else //Data processing register shift
+				else //Data processing register shift : Falta Carry
 					begin
 						case(instruction[6:5])
 							2'b00: begin //LSL
