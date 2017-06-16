@@ -1,2 +1,0 @@
-# Arqui Project
-## Class Project
