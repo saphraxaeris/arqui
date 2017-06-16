@@ -140,8 +140,8 @@ module Datapath(
 	input CLK,
 	input reset,
 
-	output wire [31:0] IRContents,
-	output wire MOC,
+	output [31:0] IRContents,
+	output MOC,
 		    Cond
 	);
 	
@@ -329,7 +329,7 @@ endmodule
 */
 module arm_tester();
 
-	reg CLK,reset;
+	reg CLK, reset;
 
 	// Initialize the ARM module
 	ARM arm(CLK, reset);
@@ -338,18 +338,18 @@ module arm_tester();
 
 	initial begin 
 		reset = 1;
-		#1 reset = 0;
+		#10 reset = 0;
 	end
 
-	integer clock_speed = 5;
-	integer clock_repetitions = 700;
+	integer clock_speed = 50;
+	integer clock_repetitions = 50;
 
 	initial begin
 		CLK = 1;
 
 		repeat (clock_repetitions) #clock_speed begin
 		CLK = ~CLK;
-		//$display("%3d", CLK);
+		$display("%3d", CLK);
 		end
 
 	end

@@ -4,17 +4,17 @@ module ram256x8(output reg [31:0] DataOut, input Enable, ReadWrite, input [7:0] 
 	if(Enable) begin
 		if(ReadWrite) begin
 			case(Mode)
-				2'b00:DataOut = Memory[Address];
-				2'b01:DataOut = {Memory[Address], Memory[Address+1]};
-				2'b10:DataOut = {Memory[Address], Memory[Address+1], Memory[Address+2], Memory[Address+3]};
-				2'b11: begin DataOut = {Memory[Address], Memory[Address+1], Memory[Address+2], Memory[Address+3]};
-				#5 DataOut = {Memory[Address+4], Memory[Address+5], Memory[Address+6], Memory[Address+7]};
+				2'b00: assign DataOut = Memory[Address];
+				2'b01: assign DataOut = {Memory[Address], Memory[Address+1]};
+				2'b10: assign DataOut = {Memory[Address], Memory[Address+1], Memory[Address+2], Memory[Address+3]};
+				2'b11: begin assign DataOut = {Memory[Address], Memory[Address+1], Memory[Address+2], Memory[Address+3]};
+				#5 assign DataOut = {Memory[Address+4], Memory[Address+5], Memory[Address+6], Memory[Address+7]};
 				end			
 			endcase
 		end
 		else begin
 			case(Mode)
-				2'b00:Memory[Address] = DataIn[7:0];
+				2'b00: Memory[Address] = DataIn[7:0];
 				2'b01:begin
 				Memory[Address] = DataIn[15:8];
 				Memory[Address+1] = DataIn[7:0];
