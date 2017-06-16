@@ -6,25 +6,25 @@ module ALU(input [31:0] a, b, input [3:0] opCode, input carryIn,
   integer fo;
   always @ (opCode, a, b, carryIn)
   begin
-    fo = $fopen("output.out", "w");
+     
     assign carry = carryIn; //For flag updating/handling at the end. Starts at carryIn.
-    $fdisplay(fo, "Initial Carry: %b", carryIn);
-    $fdisplay(fo, "%b", a);
+     $display( "Initial Carry: %b", carryIn);
+     $display( "%b", a);
     if(opCode == 4'b0000) //0000b: AND (Logical AND)
       begin
-	$fdisplay(fo, "AND"); 
+	 $display( "AND"); 
         assign result = a & b;
       end
 
     if(opCode == 4'b0001) //0001b: EOR (Logical Exclusive-OR)
       begin
-	$fdisplay(fo, "EOR"); 
+	 $display( "EOR"); 
         assign result = a ^ b;
       end 
  
     if(opCode == 4'b0010) //0010b: SUB (Subtract)
       begin
-	$fdisplay(fo, "SUB"); 
+	 $display( "SUB"); 
         assign {carry, result} = a - b;
 	assign carry = ~carry; //In substraction, we obtain borrow, not carry.
         assign overflowPossible = 1'b1; //We need to handle overflow possibility.
@@ -32,7 +32,7 @@ module ALU(input [31:0] a, b, input [3:0] opCode, input carryIn,
 
     if(opCode == 4'b0011) //0011b: RSB (Reverse Subtract)
       begin
-	$fdisplay(fo, "RSB"); 
+	 $display( "RSB"); 
         assign {carry, result} = b - a;
 	assign carry = ~carry; //In substraction, we obtain borrow, not carry.
         assign overflowPossible = 1'b1; //We need to handle overflow possibility.
@@ -40,21 +40,21 @@ module ALU(input [31:0] a, b, input [3:0] opCode, input carryIn,
   
     if(opCode == 4'b0100) //0100b: ADD (Add)
       begin
-	$fdisplay(fo, "ADD"); 
+	 $display( "ADD"); 
         assign {carry, result} = a + b;
 	assign overflowPossible = 1'b1; //We need to handle overflow possibility.
       end  
     
     if(opCode == 4'b0101) //0101b: ADC (Add with Carry)
       begin
-	$fdisplay(fo, "ADC"); 
+	 $display( "ADC"); 
         assign {carry, result} = a + b + carryIn;
         assign overflowPossible = 1'b1; //We need to handle overflow possibility.
       end
   
     if(opCode == 4'b0110) //0110b: SBC (Subtract with Carry)
       begin
-	$fdisplay(fo, "SBC"); 
+	 $display( "SBC"); 
         assign {carry, result} = a - b - (!carryIn); //Is this correct?
 	assign carry = ~carry; //In substraction, we obtain borrow, not carry.
         assign overflowPossible = 1'b1; //We need to handle overflow possibility.
@@ -62,7 +62,7 @@ module ALU(input [31:0] a, b, input [3:0] opCode, input carryIn,
     
     if(opCode == 4'b0111) //0111b: RSC (Reverse Subtract with Carry)
       begin
-	$fdisplay(fo, "RSC"); 
+	 $display( "RSC"); 
         assign {carry, result} = b - a - (!carryIn); //Is this correct?
 	assign carry = ~carry; //In substraction, we obtain borrow, not carry.
         assign overflowPossible = 1'b1; //We need to handle overflow possibility.
@@ -70,53 +70,53 @@ module ALU(input [31:0] a, b, input [3:0] opCode, input carryIn,
   
     if(opCode == 4'b1000) //1000b: TST (Test)
       begin
-	$fdisplay(fo, "TST"); 
+	 $display( "TST"); 
         assign result = a & b;
       end
   
     if(opCode == 4'b1001) //1001b: TEQ (Test Equivalence)
       begin
-	$fdisplay(fo, "TEQ"); 
+	 $display( "TEQ"); 
         assign result = a ^ b;
       end      
     
     if(opCode == 4'b1010) //1010b: CMP (Compare)
       begin
-	$fdisplay(fo, "CMP"); 
+	 $display( "CMP"); 
         assign {carry, result} = a - b;
       end
      
     if(opCode == 4'b1011) //1011b: CMN (Compare Negated)
       begin
-	$fdisplay(fo, "CMN"); 
+	 $display( "CMN"); 
         assign {carry, result} = a + b;
       end
     
     if(opCode == 4'b1100) //1100b: ORR (Logical OR)
       begin
-	$fdisplay(fo, "ORR"); 
+	 $display( "ORR"); 
         assign result = a | b;
       end
     
     if(opCode == 4'b1101) //1101b: MOV (Move)
       begin
-	$fdisplay(fo, "MOV"); 
+	 $display( "MOV"); 
         assign result = b;
       end
     
     if(opCode == 4'b1110) //1110b: BIC (Bit Clear)
       begin
-	$fdisplay(fo, "BIC"); 
+	 $display( "BIC"); 
         assign result = a & (~b);
       end
     
     if(opCode == 4'b1111) //1111b: MVN (Move Not) 
       begin
-	$fdisplay(fo, "MVN"); 
+	 $display( "MVN"); 
         assign result = ~b; //Is this correct?
       end
 
-    $fdisplay(fo, "%b", b); 
+     $display( "%b", b); 
 
     /*****FLAGS UPDATING/ASSIGNMENT (and result display)******/
     
@@ -142,11 +142,11 @@ module ALU(input [31:0] a, b, input [3:0] opCode, input carryIn,
             assign V = ((a[31] != b[31]) && (a[31] == result[31])) ? 1'b1 : 1'b0;
           end
       end
-      $fdisplay(fo, "Result: %b", result);
-      $fdisplay(fo, "N: %b", N);
-      $fdisplay(fo, "Z: %b", Z);
-      $fdisplay(fo, "C: %b", C);
-      $fdisplay(fo, "V: %b", V);
+       $display( "Result: %b", result);
+       $display( "N: %b", N);
+       $display( "Z: %b", Z);
+       $display( "C: %b", C);
+       $display( "V: %b", V);
   end   
 endmodule
 

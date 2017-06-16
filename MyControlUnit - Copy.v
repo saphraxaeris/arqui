@@ -209,10 +209,10 @@ module Encoder(output reg [7:0] Out, input [31:0] In);
 endmodule
 
 module Microstore(input [7:0] In, output reg [42:0] Out);
-always @(*) begin
 integer fo;
-fo = $fopen("output.out", "w");
-$fdisplay(fo, "State number (address): %b", In);
+always @(*) begin
+ 
+ $display( "State number (address): %b", In);
 case(In)
 8'b00000000: assign Out = 43'b0110000000000010000000000001011101101000000; //State 0
 8'b00000001: assign Out = 43'b0110000000000000100000000100000101101000000; //State 1
@@ -341,10 +341,10 @@ end
 endmodule
 
 module ControlRegister(output reg [2:0] N, output reg Inv, output reg [3:0] CUOp, output reg [1:0] S, m, MA, MC, MuxALUBSel, output reg [7:0] CR, output reg MB, RFload, IRload, MARload, MDRload, RW, MOV, MOC, MuxALUASel, MD, ME, MARClr, MDRClr, IRClr, SRload, SRClr, Cond, input [42:0] In, input CLR, CLK);
+integer fo;
 always @(posedge CLK, negedge CLR) begin
-    integer fo;
-    fo = $fopen("output.out", "w");
-	$fdisplay(fo, "State Signlas: %b", In);
+     
+	 $display( "State Signlas: %b", In);
         assign N = In[42:40];
         assign Inv = In[39];
         assign S = In[38:37];

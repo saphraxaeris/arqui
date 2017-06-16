@@ -336,7 +336,7 @@ module arm_tester();
 	// Reset the control unit
 
 	initial begin 
-		fo = $fopen("output.out", "w");
+		 
 		reset = 1;
 		#10 reset = 0;
 	end
@@ -349,7 +349,7 @@ module arm_tester();
 
 		repeat (clock_repetitions) #clock_speed begin
 		CLK = ~CLK;
-		$fdisplay(fo, "%3d", CLK);
+		 $display( "%3d", CLK);
 		end
 
 	end
@@ -370,7 +370,7 @@ module arm_tester();
 
 	initial begin
 		#(clock_speed*clock_repetitions);
-		$fdisplay(fo, "\n\nMemory Dump:");
+		 $display( "\n\nMemory Dump:");
 		positionInMemory = 0;
 		repeat (64) begin
 			$fdisplay (fo, "%3d: %b %b %b %b", positionInMemory, 

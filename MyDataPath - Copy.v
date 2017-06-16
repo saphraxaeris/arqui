@@ -2,12 +2,12 @@ module InstructionRegister(output reg [31:0] out, input [31:0] in, input LE, CLR
 	integer fo;
 	always @(posedge CLK, negedge CLR)
 	begin
-	fo = $fopen("output.out", "w");
+	 
 	//$display("The value of in is: %b, %d", in, $time);
 	if(CLR) out <= 32'h00000000;
 	else if(LE) out <= in;
 	else out <= out;
-	$fdisplay(fo, "IR out: %b", out);
+	 $display( "IR out: %b", out);
 	end
 endmodule
 
@@ -26,12 +26,12 @@ module MAR(output reg [7:0] out, input [31:0] in, input LE, CLR, CLK); //Add LE,
 	integer fo;
 	always @(posedge CLK, negedge CLR)
 	begin
-	fo = $fopen("output.out", "w");
+	 
 	//$display("The value of in is: %b, %d", in, $time);
 	if(CLR) out <= 8'b00000000;
 	else if(LE) out <= in[7:0];
 	else out <= out;
-	$fdisplay(fo, "MAR out: %b", out);
+	 $display( "MAR out: %b", out);
 	end
 endmodule
 
@@ -210,13 +210,13 @@ module StatusRegister(output reg N, Z, C, V, input N_in, Z_in, C_in, V_in, input
 	integer fo;
 	always @(posedge CLK, negedge CLR)
 	begin
-	fo = $fopen("output.out", "w");
+	 
 	//$display("The value of in is: %b, %d", in, $time);
 	if(CLR) begin N <= 0; Z <= 0; C <= 0; V <= 0; end
 	else if(LE) begin N <= N_in; Z <= Z_in; C <= C_in; V <= V_in; end
 	else N <= N; Z <= Z; C <= C; V <= V;
 	//$display("The value of out is: %b, %d", out, $time);
-	$fdisplay(fo, "N: %b, Z: %b, C: %b, V: %b", N, Z, C, V);
+	 $display( "N: %b, Z: %b, C: %b, V: %b", N, Z, C, V);
 	end
 endmodule 
 

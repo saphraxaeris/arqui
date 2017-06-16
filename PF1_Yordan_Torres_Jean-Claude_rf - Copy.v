@@ -253,8 +253,8 @@ module Test_Reg_File;
 		
 	end 
 	initial begin
-		fo = $fopen("output.out", "w");
-		$fdisplay(fo, " PA   PB  Mux_EN_Sel  IN  Time");
+		 
+		$display( " PA   PB  Mux_EN_Sel  IN  Time");
 		$monitor(" %b   %b  %b %b  %d",PA,PB, Mux_EN_Sel,IN,$time);
 	end
 endmodule
