@@ -49,7 +49,8 @@ module RAM_Access;
 	reg [7:0] Address;
 	reg [1:0] Mode;
 	wire [7:0] DataOut;
-	ram256x8 ram1 (DataOut, Enable, ReadWrite, Address, DataIn,Mode);
+	wire MOC;
+	ram256x8 ram1 (DataOut, Enable, ReadWrite, Address, DataIn,Mode, MOC);
 	initial begin
 		Mode = 2'b00;
 		fi = $fopen("PF1_Elias_Remy_Stephan_ramdata.txt", "r");

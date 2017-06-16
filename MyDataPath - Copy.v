@@ -1,11 +1,13 @@
 module InstructionRegister(output reg [31:0] out, input [31:0] in, input LE, CLR, CLK); //Add LE, CLR & CLK to all modules that need it in all files
+	integer fo;
 	always @(posedge CLK, negedge CLR)
 	begin
+	fo = $fopen("output.out", "w");
 	//$display("The value of in is: %b, %d", in, $time);
 	if(CLR) out <= 32'h00000000;
 	else if(LE) out <= in;
 	else out <= out;
-	$display("IR out: %b", out);
+	$fdisplay(fo, "IR out: %b", out);
 	end
 endmodule
 
@@ -21,13 +23,15 @@ module MDR(output reg [31:0] out, input [31:0] in, input LE, CLR, CLK); //Add LE
 endmodule
 
 module MAR(output reg [7:0] out, input [31:0] in, input LE, CLR, CLK); //Add LE, CLR & CLK to all modules that need it in all files
+	integer fo;
 	always @(posedge CLK, negedge CLR)
 	begin
+	fo = $fopen("output.out", "w");
 	//$display("The value of in is: %b, %d", in, $time);
 	if(CLR) out <= 8'b00000000;
 	else if(LE) out <= in[7:0];
 	else out <= out;
-	$display("MAR out: %b", out);
+	$fdisplay(fo, "MAR out: %b", out);
 	end
 endmodule
 
@@ -203,14 +207,16 @@ module cond_test(output reg results_cond_test, input N, Z, C, V, input [3:0] con
 endmodule
 
 module StatusRegister(output reg N, Z, C, V, input N_in, Z_in, C_in, V_in, input LE, CLR, CLK);
+	integer fo;
 	always @(posedge CLK, negedge CLR)
 	begin
+	fo = $fopen("output.out", "w");
 	//$display("The value of in is: %b, %d", in, $time);
 	if(CLR) begin N <= 0; Z <= 0; C <= 0; V <= 0; end
 	else if(LE) begin N <= N_in; Z <= Z_in; C <= C_in; V <= V_in; end
 	else N <= N; Z <= Z; C <= C; V <= V;
 	//$display("The value of out is: %b, %d", out, $time);
-	$display("N: %b, Z: %b, C: %b, V: %b", N, Z, C, V);
+	$fdisplay(fo, "N: %b, Z: %b, C: %b, V: %b", N, Z, C, V);
 	end
 endmodule 
 
