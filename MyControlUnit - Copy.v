@@ -3,8 +3,8 @@ module IncrementerRegisterAdder(output reg [7:0] Out, input[7:0] In);
 	   assign Out = In + 1;
 endmodule
 
-module IncrementerRegister(output reg [7:0] Out, input[7:0] In);
-    always @(*)
+module IncrementerRegister(output reg [7:0] Out, input[7:0] In, input CLR, CLK);
+    always @(posedge CLK, negedge CLR)
 	   assign Out = In;
 endmodule
 
@@ -34,9 +34,10 @@ module Inverter(output reg Out, input In, input Inv);
         else assign Out = In;
 endmodule
 
-module NextStateAddressSelector(input [2:0] N, input Sts, output reg [1:0] M);
-    always @(*)
-    case(N)
+module NextStateAddressSelector(input [2:0] N, input Sts, output reg [1:0] M, input reset);
+    always @(*) begin
+    if(reset) M = 2'b01;
+    else case(N)
 	3'b000: assign M=2'b00; //Encoder
 	3'b001: assign M=2'b01; //Direct 1
 	3'b010: assign M=2'b10; //Control Register
@@ -58,6 +59,7 @@ module NextStateAddressSelector(input [2:0] N, input Sts, output reg [1:0] M);
         	else assign M=2'b01; //Direct 1
         end
     endcase
+    end
 endmodule
 
 module Encoder(output reg [7:0] Out, input [31:0] In);
@@ -207,7 +209,8 @@ module Encoder(output reg [7:0] Out, input [31:0] In);
 endmodule
 
 module Microstore(input [7:0] In, output reg [42:0] Out);
-always @(*)
+always @(*) begin
+$display("State number (address): %b", In);
 case(In)
 8'b00000000: assign Out = 43'b0110000000000010000000000001011101101000000; //State 0
 8'b00000001: assign Out = 43'b0110000000000000100000000100000101101000000; //State 1
@@ -332,10 +335,12 @@ case(In)
 8'b01111000: assign Out = 43'b0100000000000110000000000010001100100000000; //State 120
 default: assign Out = 43'b0110000000000010000000000001011101101000000; //State 0 //Possible source of bugs if reset is not defined correctly in table to increment to next state.
 endcase
+end
 endmodule
 
-module ControlRegister(output reg [2:0] N, output reg Inv, output reg [3:0] CUOp, output reg [1:0] S, m, MA, MC, MuxALUBSel, output reg [7:0] CR, output reg MB, RFload, IRload, MARload, MDRload, RW, MOV, MOC, MuxALUASel, MD, ME, MARClr, MDRClr, IRClr, SRload, SRClr, Cond, input [42:0] In);
-always @(*) begin
+module ControlRegister(output reg [2:0] N, output reg Inv, output reg [3:0] CUOp, output reg [1:0] S, m, MA, MC, MuxALUBSel, output reg [7:0] CR, output reg MB, RFload, IRload, MARload, MDRload, RW, MOV, MOC, MuxALUASel, MD, ME, MARClr, MDRClr, IRClr, SRload, SRClr, Cond, input [42:0] In, input CLR, CLK);
+always @(posedge CLK, negedge CLR) begin
+	$display("State Signlas: %b", In);
         assign N = In[42:40];
         assign Inv = In[39];
         assign S = In[38:37];

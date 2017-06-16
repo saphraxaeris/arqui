@@ -5,7 +5,7 @@ module InstructionRegister(output reg [31:0] out, input [31:0] in, input LE, CLR
 	if(CLR) out <= 32'h00000000;
 	else if(LE) out <= in;
 	else out <= out;
-	//$display("The value of out is: %b, %d", out, $time);
+	$display("IR out: %b", out);
 	end
 endmodule
 
@@ -27,7 +27,7 @@ module MAR(output reg [7:0] out, input [31:0] in, input LE, CLR, CLK); //Add LE,
 	if(CLR) out <= 8'b00000000;
 	else if(LE) out <= in[7:0];
 	else out <= out;
-	//$display("The value of out is: %b, %d", out, $time);
+	$display("MAR out: %b", out);
 	end
 endmodule
 
@@ -52,7 +52,7 @@ module ShifterAndSignExt(output reg [31:0] out, input [31:0] instruction, Rm);
 							end
 						assign out = tempReg;
 					end
-				else //Data processing register shift : Falta Carry
+				else //Data processing register shift
 					begin
 						case(instruction[6:5])
 							2'b00: begin //LSL
@@ -210,6 +210,7 @@ module StatusRegister(output reg N, Z, C, V, input N_in, Z_in, C_in, V_in, input
 	else if(LE) begin N <= N_in; Z <= Z_in; C <= C_in; V <= V_in; end
 	else N <= N; Z <= Z; C <= C; V <= V;
 	//$display("The value of out is: %b, %d", out, $time);
+	$display("N: %b, Z: %b, C: %b, V: %b", N, Z, C, V);
 	end
 endmodule 
 
