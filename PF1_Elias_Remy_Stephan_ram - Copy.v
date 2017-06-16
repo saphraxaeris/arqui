@@ -1,7 +1,7 @@
-module ram256x8(output reg [31:0] DataOut, input Enable, ReadWrite, input [7:0] Address, input [31:0] DataIn, input [1:0] Mode);
+module ram256x8(output reg [31:0] DataOut, input Enable, ReadWrite, input [7:0] Address, input [31:0] DataIn, input [1:0] Mode, output reg moc);
 	reg [7:0] Memory[0:255]; //256 locations of 8bits
 	always @ (Enable, ReadWrite)
-	if(Enable)
+	if(Enable) begin
 		if(ReadWrite) begin
 			case(Mode)
 				2'b00:DataOut = Memory[Address];
@@ -37,6 +37,8 @@ module ram256x8(output reg [31:0] DataOut, input Enable, ReadWrite, input [7:0] 
 				end
 			endcase
 		end
+	assign moc = 1;
+	end
 endmodule
 
 module RAM_Access;
